@@ -39,7 +39,7 @@ if [ .$servernum = .'1' ]; then
 		exit 3
 	fi
 	verbose "Creating SSH key."
-	ssh-keygen -t rsa -b 4096 -m PEM -C root@`hostname` -q -P -f /root/.ssh/id_rsa
+	ssh-keygen -t rsa -b 4096 -m PEM -C root@`hostname` -q -P "" -f /root/.ssh/id_rsa
 	warning "You will need to copy the text in between the ------------ markers into the file /root/.ssh/authorized_keys on server ${proxmoxip}, otherwise you will have to enter the root password every time a command is run"
 	echo
 	warning "------------"
@@ -72,7 +72,7 @@ else
 		exit 3
 	fi
 	verbose "Creating SSH key."
-	ssh-keygen -t rsa -b 4096 -m PEM -C root@`hostname` -q -P -f /root/.ssh/id_rsa
+	ssh-keygen -t rsa -b 4096 -m PEM -C root@`hostname` -q -P "" -f /root/.ssh/id_rsa
 	warning "You will need to copy the text in between the ------------ markers into the file /root/.ssh/authorized_keys on server ${proxmoxip}, otherwise you will have to enter the root password every time a command is run"
 	echo
 	warning "------------"

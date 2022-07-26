@@ -13,6 +13,7 @@ During the bootstrapping phase, the PetaSAN kernel and other utilities will be i
 To start the bootstrapping phase you'll need to download this repo and run the `bootstrap.sh` script.
 
 First, you need to ensure you're running as root:
+
     sudo -s
 
 Then run the following commands:
