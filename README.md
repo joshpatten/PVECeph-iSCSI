@@ -18,18 +18,17 @@ First, you need to ensure you're running as root:
 Then run the following commands:
 
     cd ~
-    apt -Y install git
+    apt install git
     git clone https://github.com/joshpatten/PVECeph-iSCSI.git
     cd PVECeph-iSCSI
-    chmod +x bootstrap.sh
-    ./bootstrap.sh
+    bash bootstrap.sh
 
 Once the bootstrap is complete you will need to reboot the server.
 
 After the server has rebooted you can begin stage 2:
 
     cd ~/PVECeph-iSCSI
-    ./stage2.sh
+    bash stage2.sh
 
 You will be prompted to select if this is the first server you are setting up, or if it is an additional server.
 

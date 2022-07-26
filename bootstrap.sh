@@ -72,4 +72,4 @@ cp -a scripts/* /usr/local/bin
 systemctl enable rbdmap
 chmod +x stage2.sh
 
-warning "Bootstrap complete. Please reboot this server and run the 'stage2.sh' script to continue."
+warning "Bootstrap complete. Please reboot this server and run 'bash stage2.sh' to continue."
