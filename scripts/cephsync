@@ -1,0 +1,47 @@
+#!/usr/bin/python3
+
+import sys
+import os
+import paramiko
+import configparser
+
+class G:
+	client = paramiko.SSHClient()
+	transport = None
+	cephconfig = configparser.ConfigParser()
+
+def main():
+	floc = '/usr/local/etc/proxmoxip'
+	try:
+		with open(floc, 'r') as f:
+			proxmoxip = f.read().strip()
+	except Exception as e:
+		print(f"ERROR: could not open file {floc} becasue {e}\r\nPlease ensure the file exists and is readable")
+		return 1
+	G.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+	G.client.load_system_host_keys()
+	G.transport = paramiko.Transport(proxmoxip, 22)
+	mykey = paramiko.RSAKey.from_private_key_file('/root/.ssh/id_rsa')
+	G.transport.connect(None, username='root', pkey = mykey)
+	sftp = paramiko.SFTPClient.from_transport(G.transport)
+	with sftp.open('/etc/ceph/ceph.conf') as f:
+		G.cephconfig.read_file(f)
+	clientkey = G.cephconfig['client']['keyring']
+	clientkey = clientkey.replace('/etc/pve/priv/', '/etc/ceph/')
+	G.cephconfig['client']['keyring'] = clientkey
+	sectionnuke = []
+	for section in G.cephconfig.sections():
+		if section.startswith('mds'): # We don't need MDS stuff
+			sectionnuke.append(section)
+	for row in sectionnuke:
+		G.cephconfig.remove_section(row)
+	with open('/etc/ceph/ceph.conf', 'w') as f:
+		G.cephconfig.write(f)
+	for file in sftp.listdir('/etc/ceph'):
+		if file.endswith('.keyring'):
+			print(f"Copying /etc/ceph/{file}")
+			sftp.get(f"/etc/ceph/{file}", f"/etc/ceph/{file}")
+
+
+if __name__ == "__main__":
+	sys.exit(main())

@@ -1,0 +1,46 @@
+#!/usr/bin/python3
+
+import pyinotify
+import sys
+import os
+from pprint import pprint
+
+class G:
+	pathname = '/etc/target/saveconfig.json'
+	path = '/etc/target'
+	reloadcmd = '/usr/bin/systemctl reload targetrestore'
+
+class EventHandler(pyinotify.ProcessEvent):
+	def __init__(self, *args, **kwargs):
+		super(EventHandler, self).__init__(*args, **kwargs)
+
+	def process_IN_MOVED_TO(self, event):
+		if event.pathname == G.pathname:
+			self._target_reload(event.pathname)
+
+	def process_IN_CLOSE_WRITE(self, event):
+		if event.pathname == G.pathname:
+			self._target_reload(event.pathname)
+	
+	def _target_reload(self, pathname):
+		print(f'Event received for {pathname}, reloading target configuration')
+		os.system(G.reloadcmd)
+
+
+def main():
+	wm = pyinotify.WatchManager()
+	handler = EventHandler()
+	notifier = pyinotify.Notifier(wm, handler)
+	wm.add_watch(G.path, pyinotify.IN_MOVED_TO | pyinotify.IN_CLOSE_WRITE)
+	# Loop forever and handle events.
+	try:
+		notifier.loop()
+	except KeyboardInterrupt:
+		notifier.stop()
+		return 0
+	except Exception as e:
+		print(f"Error encountered: {e}")
+		return 1
+
+if __name__ == "__main__":
+	sys.exit(main())
