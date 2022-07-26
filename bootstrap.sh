@@ -43,6 +43,7 @@ wget -qO - http://archive.petasan.org/repo/release.asc | apt-key add -
 
 verbose "Installing PetaSAN kernel and utilities and updating all installed packages"
 
+apt update
 
 apt -y -o Dpkg::Options::="--force-overwrite" install ceph-petasan cpupower linux-image-petasan petasan-firmware targetcli-fb lvm2 grub2 python3-ceph-argparse python3-ceph-common python3-ceph python3-cephfs python3-consul python3-rados python3-rbd python3-rgw python3-rtslib-fb radosgw rbd-fuse rbd-mirror rbd-nbd
 
