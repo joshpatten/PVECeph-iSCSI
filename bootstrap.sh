@@ -48,6 +48,17 @@ apt update
 apt -y -o Dpkg::Options::="--force-overwrite" install ceph-petasan cpupower linux-image-petasan petasan-firmware targetcli-fb lvm2 grub2 python3-ceph-argparse python3-ceph-common python3-ceph python3-cephfs python3-consul python3-rados python3-rbd python3-rgw python3-rtslib-fb radosgw rbd-fuse rbd-mirror rbd-nbd
 
 verbose "Setting PetaSAN kernel as default"
+export DEBIAN_FRONTEND=noninteractive
+apt remove -y linux-headers-generic
+apt remove -y linux-headers-*-generic
+apt remove -y linux-headers-virtual
+apt remove -y linux-headers-*-virtual
+apt remove -y linux-image-generic
+apt remove -y linux-image-*-generic
+apt remove -y linux-image-virtual
+apt remove -y linux-image-*-virtual
+apt -y --purge  autoremove
+update-initramfs -c -k all
 update-grub
 
 verbose "Adding kernel modules"
@@ -70,6 +81,5 @@ mkdir /etc/ceph
 chmod +x scripts/*
 cp -a scripts/* /usr/local/bin
 systemctl enable rbdmap
-chmod +x stage2.sh
 
 warning "Bootstrap complete. Please reboot this server and run 'bash stage2.sh' to continue."
