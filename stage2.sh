@@ -128,6 +128,7 @@ WantedBy=multi-user.target
 EOM
 
 systemctl daemon-reload
+systemctl enable syncthing
 
 echo "fs.inotify.max_user_watches=204800" | tee -a /etc/sysctl.conf
 echo 204800 > /proc/sys/fs/inotify/max_user_watches
@@ -152,15 +153,15 @@ verbose "Setting up targetrestore service"
 targetcli-fb set global auto_add_default_portal=false
 cat > /lib/systemd/system/targetrestore.service <<-EOM
 [Unit]
-Description=Map RBD devices
+Description=Restore iSCSI targets
 After=network-online.target ceph.target rbdmap.service
 Wants=network-online.target ceph.target rbdmap.service
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/bin/targetcli-fb restoreconfig /etc/target/saveconfig.json clear_existing=true
-ExecReload=/usr/bin/targetcli-fb restoreconfig /etc/target/saveconfig.json clear_existing=true
+ExecStart=-/usr/bin/targetcli-fb restoreconfig /etc/target/saveconfig.json clear_existing=true
+ExecReload=-/usr/bin/targetcli-fb restoreconfig /etc/target/saveconfig.json clear_existing=true
 ExecStop=/usr/bin/targetcli-fb clearconfig confirm=true
 
 [Install]
