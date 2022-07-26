@@ -57,6 +57,10 @@ apt remove -y linux-image-generic
 apt remove -y linux-image-*-generic
 apt remove -y linux-image-virtual
 apt remove -y linux-image-*-virtual
+apt remove -y linux-modules-generic
+apt remove -y linux-modules-*-generic
+apt remove -y linux-modules-virtual
+apt remove -y linux-modules-*-virtual
 apt -y --purge  autoremove
 update-initramfs -c -k all
 update-grub
