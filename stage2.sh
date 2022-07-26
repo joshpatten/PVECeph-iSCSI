@@ -52,7 +52,7 @@ if [ .$servernum = .'1' ]; then
 	err_check $?
 	verbose "Copying ceph configuration from ${proxmoxip}"
 	cephsync
-	cat < /etc/cron.hourly/cephsyncer <<-EOM
+	cat > /etc/cron.hourly/cephsyncer <<-EOM
 #!/bin/sh
 /usr/local/bin/cephsync
 	EOM

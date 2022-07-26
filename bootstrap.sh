@@ -9,7 +9,7 @@
 
 verbose "Setting up PetaSAN repository"
 
-cat < /etc/apt/sources.list <<-EOM
+cat > /etc/apt/sources.list <<-EOM
 # main
 deb http://archive.ubuntu.com/ubuntu/ focal main
 deb http://archive.ubuntu.com/ubuntu/ focal-updates main
@@ -21,7 +21,7 @@ deb http://archive.ubuntu.com/ubuntu/ focal-updates universe
 deb http://archive.ubuntu.com/ubuntu/ focal-security universe
 EOM
 
-cat < /etc/apt/sources.list.d/petasan.list <<-EOM
+cat > /etc/apt/sources.list.d/petasan.list <<-EOM
 # PetaSAN updates
 deb http://archive.petasan.org/repo_v3/ petasan-v3 updates
 EOM
@@ -45,7 +45,7 @@ update-grub
 
 verbose "Adding kernel modules"
 
-cat < /etc/modules <<-EOM
+cat > /etc/modules <<-EOM
 # /etc/modules: kernel modules to load at boot time.
 #
 # This file contains the names of kernel modules that should be loaded
