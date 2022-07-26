@@ -24,7 +24,7 @@ EOM
 verbose "Installing wget and other necessities"
 apt update
 apt -y dist-upgrade
-apt install -y wget curl apt-transport-https python3-paramiko python3-pyinotify
+apt install -y wget curl apt-transport-https python3-paramiko python3-pyinotify python3-sshtunnel
 
 cat > /etc/apt/sources.list.d/petasan.list <<-EOM
 # PetaSAN updates

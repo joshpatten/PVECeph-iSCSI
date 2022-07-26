@@ -106,6 +106,7 @@ Documentation=man:syncthing(1)
 After=network.target
 
 [Service]
+User=root
 Type=simple
 ExecStart=/usr/bin/syncthing serve --no-browser --no-restart --logflags=0
 Restart=on-failure
