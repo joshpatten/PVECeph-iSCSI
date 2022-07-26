@@ -51,12 +51,15 @@ if [ .$servernum = .'1' ]; then
 	ssh root@${proxmoxip} "hostname"
 	err_check $?
 	verbose "Copying ceph configuration from ${proxmoxip}"
+	cat > /usr/local/etc/proxmoxip <<-EOM
+${proxmoxip}
+EOM
 	cephsync
 	cat > /etc/cron.hourly/cephsyncer <<-EOM
 #!/bin/sh
 /usr/local/bin/cephsync
 	EOM
-	chmod +x etc/cron.hourly/cephsyncer
+	chmod +x /etc/cron.hourly/cephsyncer
 	sed -i /etc/ssh/sshd_config -e "s:#PermitRootLogin:PermitRootLogin:"
 	systemctl restart sshd
 else
@@ -73,7 +76,7 @@ else
 	fi
 	verbose "Creating SSH key."
 	ssh-keygen -t rsa -b 4096 -m PEM -C root@`hostname` -q -P "" -f /root/.ssh/id_rsa
-	warning "You will need to copy the text in between the ------------ markers into the file /root/.ssh/authorized_keys on server ${proxmoxip}, otherwise you will have to enter the root password every time a command is run"
+	warning "You will need to copy the text in between the ------------ markers into the file /root/.ssh/authorized_keys on server ${iscsiip}, otherwise you will have to enter the root password every time a command is run"
 	echo
 	warning "------------"
 	cat /root/.ssh/id_rsa.pub
@@ -81,7 +84,7 @@ else
 	echo "When you have added this text to the file /root/.ssh/authorized_keys on server ${iscsiip}, press Enter to continue"
 	read placeholder
 	warning "Please accept the connection by typing 'yes' and pressing Enter"
-	ssh root@${proxmoxip} "hostname"
+	ssh root@${iscsiip} "hostname"
 	err_check $?
 	verbose "Clearing any existing ceph or target config"
 	rm -r /etc/ceph/*
