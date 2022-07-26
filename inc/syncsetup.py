@@ -78,7 +78,7 @@ def getRemoteConfig(host, apikey):
 	tunnel = SSHTunnelForwarder(
 		(host, 22),
 		ssh_username = 'root',
-		ssh_pkey = '/root/.ssh/id_rsa.key',
+		ssh_pkey = '/root/.ssh/id_rsa',
 		remote_bind_address=('127.0.0.1', G.syncapiport),
 		local_bind_address=('127.0.0.1', remapiport)
 	)
